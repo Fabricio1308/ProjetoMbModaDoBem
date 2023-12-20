@@ -1,0 +1,169 @@
+<?php
+include_once "config.php";
+
+session_start();
+
+  if((!isset($_SESSION['email']) == true) and (!isset($_SESSION['senha']) == true)) {
+    unset($_SESSION['email']);
+    unset($_SESSION['senha']);
+    header('Location: login.php');
+  } else{
+    $logado = $_SESSION['email'];
+  } 
+
+$email = $_SESSION['email'];
+$sql = $conexao->prepare("SELECT imgUsuario FROM usuario WHERE email = ?");
+$sql->bind_param('s', $email); // 'i' indica que $id é um número inteiro
+$sql->execute();
+$result = $sql->get_result();
+
+$row = $result->fetch_assoc();
+$imgUsuario = $row['imgUsuario'];
+
+
+$sql->close();
+?>
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/logo-azul.png" type="icon">
+   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <title>MB - Novidades</title>
+</head>
+<style>
+    /* Seção de Novidades */
+    
+
+
+    @media(max-width:600px) {
+section#section-novidades {
+    background-color: #ffffffb5;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 5%; /* Usando porcentagem para ser responsivo */
+    border-radius: 20px;
+}
+
+
+/* Partes azuis em volta */
+section#section-novidades article {
+    background-color: #2160a9;
+    width: 100%; /* Ocupar 100% da largura da seção */
+    max-width: 300px; /* Largura máxima para evitar que o conteúdo se estenda demais */
+    height: auto; /* Altura automática com base no conteúdo */
+    margin: 20px 0; /* Margem superior e inferior, removendo a margem lateral */
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Imagens */
+section#section-novidades article img {
+    width: 100%; /* Ocupar 100% da largura do contêiner pai */
+    height: auto; /* Altura automática com base na largura para manter a proporção */
+    border-radius: 20px;
+    margin-bottom: 15px; /* Reduzindo a margem inferior */
+}
+
+/* Títulos abaixo das imagens */
+section#section-novidades article h4 {
+    font-size: 1.3em;
+    margin-bottom: 15px; /* Reduzindo a margem inferior */
+}
+
+/* Saiba Mais */
+section#section-novidades article p {
+    font-size: 0.8em;
+    font-weight: lighter;
+    margin-bottom: 30px; /* Ajustando a margem inferior */
+}
+    }
+</style>
+
+<body>
+
+    <header>
+    <nav class="navbar navbar-expand-lg ">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="indexLogin.php"><img src="images/logo-branca.png" alt="Logo Moda do Bem" title="Logo Moda do Bem"
+                    class="logo"></a>
+    <div class="foto-tirarD">
+    <a class="navbar-brand" href="telaDePerfil.php"><img src="imgUsuarios/<?php if($imgUsuario == null){
+                    echo "foto-perfil.png";
+                    } else {
+                        echo $imgUsuario;
+                    } ?>" style="border-radius: 80px; height: 50px; widht: 40px ;" alt="Imagem do Perfil" title="Imagem de Perfil"></a>
+                    </div>
+<button class="navbar-toggler bg-body-tertiary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon "></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+       <a class="nav-link " href="novidades.php">Novidades</a>         
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="sobre-nos.php">Sobre Nós</a>
+        </li>
+        <li class="nav-item">
+        <a class="nav-link" href="doar.php">Doar</a>
+        </li>
+        <li class="nav-item">
+       
+        </li>
+      </ul>
+      <span class="navbar-text">
+
+      <div class="foto-tirar">
+        <a class="navbar-brand" href="telaDePerfil.php"><img src="imgUsuarios/<?php if($imgUsuario == null){
+                    echo "foto-perfil.png";
+                    } else {
+                        echo $imgUsuario;
+                    } ?>" style="border-radius: 80px; height: 50px; widht: 40px ;" alt="Imagem do Perfil" title="Imagem de Perfil"></a>
+</div>
+      </span>
+    </div>
+  </div>
+</nav>
+    </header>
+
+        <main id="main-novidades">
+            <h1>Novidades</h1>
+            <section id="section-novidades">
+                <article>
+                    <img src="images/roupas-novidades.png" alt="Imagem de Roupas" title="Peças Doadas">
+                    <h4>Mais de 300 peças de roupas doadas!</h4>
+                    <p>A moda do bem vem crescendo cada vez mais, e você pode nos ajudar a chegar ainda mais longe.</p>
+                </article>
+                <article>
+                    <img src="images/criancas-novidades.png" alt="Crianças Juntas Sorrindo"
+                        title="Crianças Felizes com a Sua Doação">
+                    <h4>As crianças ficam felizes com as doações!</h4>
+                    <p>As crianças também são carentes de doações, pois a maioria das roupas doadas são para adultos. Ajude uma criança agora mesmo.</p>
+                </article>
+                <article>
+                    <img src="images/logoCaritas.jpeg" alt="Logo Caritas" title="Caritas">
+                    <h4>Caritas</h4>
+                    <p>Uma ong que ajuda e acolhe moradores de ruas e esta junto com a Moda Do Bem para construir uma sociedade melhor.</p>
+                </article>
+            </section>
+        </main>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+       <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script>(function(){ var s = document.createElement('script'); var h =
+document.querySelector('head') || document.body; s.charset="UTF-8"; s.src =
+'https://cdn.assistive.com.br/plugin/AssistiveWebPlugin.js'; s.async = true; s.onload
+= function(){ assistive.init({});}; h.appendChild(s); })(); </script>
+</body>
+
+</html>
